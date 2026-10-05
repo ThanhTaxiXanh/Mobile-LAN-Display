@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Thanh Taxi Xanh</title><link rel="stylesheet" href="/core/ui.css"></head>
+<body><div class="wrap">
+<div id="st" class="st"></div>
+<div id="card"></div>
+<div class="panel" id="form"><div class="grid">
+  <select id="bank"></select>
+  <input id="acc" inputmode="numeric" placeholder="Số tài khoản">
+  <input id="own" placeholder="Tên chủ tài khoản">
+  <input id="amt" inputmode="numeric" placeholder="Số tiền (VND)">
+  <div class="q" id="quick"></div>
+  <input id="desc" maxlength="50" placeholder="Nội dung">
+  <div class="row"><button id="upd" class="pri">CẬP NHẬT</button><button id="clr">XÓA SỐ TIỀN</button></div>
+</div></div>
+<details class="panel" id="pairbox"><summary>Ghép nối Android</summary><div class="grid">
+  <div id="unpaired"><p>Quét QR trên màn hình Android bằng Camera iPhone, hoặc nhập mã 6 số:</p>
+    <input id="code" inputmode="numeric" maxlength="7" placeholder="Mã ghép nối"><button id="pairbtn" class="pri">GHÉP NỐI</button></div>
+  <div id="paired" class="row"><button id="recon">Kết nối lại</button><button id="unpair">Ngắt ghép nối</button></div>
+</div></details>
+<div id="toast" class="toast" hidden></div>
+</div>
+<script src="/core/vietqr.js"></script><script src="/core/qr.js"></script><script src="/core/sha.js"></script><script src="/core/card.js"></script><script src="/apps/control/control.js"></script>
+</body></html>
