@@ -22,7 +22,7 @@ jobs:
       run: |
         # Thay thế "ten_file_cua_ban.zip" bằng tên file thực tế của bạn
         # Tham số "-o" để ghi đè (overwrite) nếu thư mục đích đã tồn tại
-        unzip -o lan-vietqr-display.zip -d 
+        unzip -o lan-vietqr-display.zip -d /
 
     # 3. Đẩy các file đã giải nén ngược trở lại GitHub
     - name: Đẩy file đã giải nén lên GitHub
