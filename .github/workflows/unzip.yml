@@ -1,0 +1,74 @@
+name: Auto Unzip to Main
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "**/*.zip"
+
+permissions:
+  contents: write
+
+jobs:
+  unzip:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Find and extract ZIP files
+        shell: bash
+        run: |
+          set -e
+
+          echo "Searching for ZIP files..."
+
+          found=0
+
+          while IFS= read -r -d '' zipfile; do
+            found=1
+
+            echo "========================================"
+            echo "Extracting: $zipfile"
+            echo "========================================"
+
+            # Giải nén trực tiếp vào thư mục gốc repository
+            unzip -o "$zipfile" -d .
+
+            # Xóa file ZIP sau khi giải nén
+            rm -f "$zipfile"
+
+          done < <(find . -type f -iname "*.zip" -not -path "./.git/*" -print0)
+
+          if [ "$found" -eq 0 ]; then
+            echo "No ZIP files found."
+          else
+            echo "ZIP extraction completed."
+          fi
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit extracted files
+        shell: bash
+        run: |
+          set -e
+
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Auto extract ZIP files"
+
+      - name: Push changes to main
+        run: |
+          git push origin main
