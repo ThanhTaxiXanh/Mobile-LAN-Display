@@ -1,0 +1,40 @@
+name: Tự động giải nén file ZIP
+
+on:
+  push:
+    branches:
+      - main  # Hoặc đổi thành 'master' tùy thuộc vào nhánh chính của bạn
+
+permissions:
+  contents: write # Cấp quyền cho Action để đẩy file sau khi giải nén lên lại kho lưu trữ
+
+jobs:
+  unzip-file:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Lấy mã nguồn từ kho lưu trữ về máy ảo GitHub Actions
+    - name: Checkout mã nguồn
+      uses: actions/checkout@v4
+
+    # 2. Thực hiện lệnh giải nén file .zip
+    - name: Giải nén file .zip
+      run: |
+        # Thay thế "ten_file_cua_ban.zip" bằng tên file thực tế của bạn
+        # Tham số "-o" để ghi đè (overwrite) nếu thư mục đích đã tồn tại
+        unzip -o ten_file_cua_ban.zip -d thu_muc_dich/
+
+    # 3. Đẩy các file đã giải nén ngược trở lại GitHub
+    - name: Đẩy file đã giải nén lên GitHub
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "41898282+github-actions[bot]@://github.com"
+        
+        git add .
+        # Kiểm tra nếu có thay đổi mới thì mới commit để tránh lỗi Action
+        if ! git diff-index --quiet HEAD; then
+          git commit -m "Automation: Tự động giải nén file ZIP khi push"
+          git push
+        else
+          echo "Không có file mới nào thay đổi để cập nhật."
+        fi
